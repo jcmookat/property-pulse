@@ -1,15 +1,15 @@
 import { Schema, model, models } from 'mongoose';
 
-const UserSchema = new Scheme(
+const UserSchema = new Schema(
 	{
 		email: {
 			type: String,
 			unique: [true, 'Email already exists'],
 			required: [true, 'Email is required'],
 		},
-		usernames: {
+		username: {
 			type: String,
-			required: [true, 'Username is requires'],
+			required: [true, 'Username is required'],
 		},
 		image: {
 			type: String,
