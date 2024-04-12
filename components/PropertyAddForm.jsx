@@ -29,9 +29,91 @@ const PropertyAddForm = () => {
 		images: [],
 	});
 
-	const handleChange = () => {};
-	const handleAmenitiesChange = () => {};
-	const handleImageChange = () => {};
+	// Input Fields
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+
+		// Check if nested property
+		if (name.includes('.')) {
+			const [outerKey, innerKey] = name.split('.');
+
+			setFields((prevFields) => ({
+				...prevFields,
+				[outerKey]: {
+					...prevFields[outerKey], //index
+					[innerKey]: value,
+				},
+			}));
+		} else {
+			// Not nested
+			setFields((prevFields) => ({
+				...prevFields,
+				[name]: value,
+			}));
+		}
+	};
+
+	// Checkbox Amenities
+	const handleAmenitiesChange = (e) => {
+		const { value, checked } = e.target;
+
+		// Clone the current array
+		const updatedAmenities = [...fields.amenities];
+
+		if (checked) {
+			// Add value to the array
+			updatedAmenities.push(value);
+		} else {
+			// Remove value from the array
+			const index = updatedAmenities.indexOf(value);
+			// if it does not exist, it will output -1
+
+			if (index !== -1) {
+				// if it does exist, it will remove from array
+				updatedAmenities.splice(index, 1);
+			}
+		}
+
+		// Update state with updated array
+		setFields((prevFields) => ({
+			...prevFields,
+			amenities: updatedAmenities,
+		}));
+	};
+	const handleImageChange = (e) => {
+		const { files } = e.target;
+		const maxImages = 4;
+		const currentImageCount = fields.images.length;
+		const newFilesCount = files.length;
+		const totalImagesAfterAdd = currentImageCount + newFilesCount;
+
+		// If adding new files exceeds the limit, clear the input and alert the user
+		if (totalImagesAfterAdd > maxImages) {
+			e.target.value = ''; // This clears the selected files from the input
+			alert(`You can select up to ${maxImages} images in total.`);
+
+			// reset images in state
+			setFields((prevFields) => ({
+				...prevFields,
+				images: [],
+			}));
+			return;
+		}
+
+		// Clone images array
+		const updatedImages = [...fields.images]; // from useState
+
+		// Add new files to to array (for of loop)
+		for (const file of files) {
+			updatedImages.push(file);
+		}
+
+		// Update state with updated array of images
+		setFields((prevFields) => ({
+			...prevFields,
+			images: updatedImages,
+		}));
+	};
 	return (
 		<form>
 			<h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
