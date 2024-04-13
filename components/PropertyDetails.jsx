@@ -66,7 +66,7 @@ const PropertyDetails = ({ property }) => {
 						{property.beds} <span className='hidden sm:inline'>Beds</span>
 					</p>
 					<p>
-						<FaBath className='inline-block mr-2' /> {property.baths}
+						<FaBath className='inline-block mr-2' /> {property.baths}{' '}
 						<span className='hidden sm:inline'>Baths</span>
 					</p>
 					<p>
