@@ -1,6 +1,7 @@
 import connectDB from '@/config/database';
 import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
+import cloudinary from '@/config/cloudinary';
 
 // GET /api/properties
 export const GET = async (request) => {
@@ -73,11 +74,38 @@ export const POST = async (request) => {
 				phone: formData.get('seller_info.phone'),
 			},
 			owner: userId,
-			// images,
+			// images, // we don't need this... upload to cloudinary first, we receive the url, then we save the url to db
 		};
 
-		const newProperty = new Property(propertyData); // new Property - model
+		// Upload image(s) to Cloudinary
+		// NOTE: this will be an array of strings, not an array of Promises
+		// So imageUploadPromises has been changed to imageUrls to more
+		// declaratively represent it's type.
 
+		const imageUrls = [];
+
+		for (const imageFile of images) {
+			const imageBuffer = await imageFile.arrayBuffer();
+			const imageArray = Array.from(new Uint8Array(imageBuffer));
+			const imageData = Buffer.from(imageArray);
+
+			// Convert the image data to base64
+			const imageBase64 = imageData.toString('base64');
+
+			// Make request to upload to Cloudinary
+			const result = await cloudinary.uploader.upload(
+				`data:image/png;base64,${imageBase64}`,
+				{ folder: 'propertypulse' },
+			);
+			imageUrls.push(result.secure_url);
+		}
+
+		// NOTE: here there is no need to await the resolution of
+		// imageUploadPromises as it's not an array of Promises it's an array of strings, additionally we shoult not await on every iteration of our loop
+
+		propertyData.images = imageUrls;
+
+		const newProperty = new Property(propertyData); // new Property - model
 		await newProperty.save();
 
 		return Response.redirect(
