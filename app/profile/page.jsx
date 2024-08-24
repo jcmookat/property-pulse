@@ -4,6 +4,7 @@ import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 import profileDefault from '@/assets/images/profile.png';
 import ProfileProperties from '@/components/ProfileProperties';
+import { convertToSerializeableObject } from '@/utils/convertToObject';
 
 const ProfilePage = async () => {
 	await connectDB();
@@ -16,7 +17,10 @@ const ProfilePage = async () => {
 		throw new Error('User ID is required');
 	}
 
-	const properties = await Property.find({ owner: userId }).lean();
+	const propertiesDocs = await Property.find({ owner: userId }).lean(); // lean
+
+	// convert the document to a plain js object so we can pass to client components
+	const properties = propertiesDocs.map(convertToSerializeableObject); //returns an array of documents so we need to .map through
 
 	return (
 		<section className='bg-blue-50'>
@@ -45,7 +49,6 @@ const ProfilePage = async () => {
 						</div>
 						<div className='md:w-3/4 md:pl-4'>
 							<h2 className='text-xl font-semibold mb-4'>Your Listings</h2>
-
 							<ProfileProperties properties={properties} />
 						</div>
 					</div>

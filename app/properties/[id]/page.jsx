@@ -19,7 +19,7 @@ const PropertyPage = async ({ params }) => {
 
 	// convert the document to a plain js object so we can pass to client
 	// components
-	const property = convertToSerializeableObject(propertyDoc);
+	const property = convertToSerializeableObject(propertyDoc); //single object, no need to .map
 
 	if (!property) {
 		return (
