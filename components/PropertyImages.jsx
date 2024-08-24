@@ -8,7 +8,7 @@ const PropertyImages = ({ images }) => {
 					<Image
 						src={images[0]}
 						alt=''
-						className='object-cover h-[400] mx-auto rounded-xl'
+						className='object-cover h-[400px] mx-auto rounded-xl'
 						width={0}
 						height={0}
 						sizes='100vw'
@@ -25,7 +25,7 @@ const PropertyImages = ({ images }) => {
 								<Image
 									src={image}
 									alt=''
-									className='object-cover h-[400] w-full rounded-xl'
+									className='object-cover h-[400px] w-full rounded-xl'
 									width={0}
 									height={0}
 									sizes='100vw'
