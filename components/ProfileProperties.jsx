@@ -2,9 +2,27 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import deleteProperty from '@/app/actions/deleteProperty';
 
 const ProfileProperties = ({ properties: initialProperties }) => {
 	const [properties, setProperties] = useState(initialProperties);
+
+	// If delete button clicked
+	const handleDeleteProperty = async (propertyId) => {
+		const confirmed = window.confirm(
+			'Are you sure you want to delete this property?',
+		);
+
+		if (!confirmed) return;
+
+		await deleteProperty(propertyId); //deleteProperty() from actions
+
+		const updatedProperties = properties.filter(
+			(property) => property._id !== propertyId, //remove property being deleted from the current array of properties
+		);
+
+		setProperties(updatedProperties); // updated State
+	};
 	return properties.map((property) => (
 		<div className='mb-10' key={property._id}>
 			<Link href={`/properties/${property._id}`}>
