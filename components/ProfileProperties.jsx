@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 import deleteProperty from '@/app/actions/deleteProperty';
 
 const ProfileProperties = ({ properties: initialProperties }) => {
@@ -22,6 +23,8 @@ const ProfileProperties = ({ properties: initialProperties }) => {
 		);
 
 		setProperties(updatedProperties); // updated State
+
+		toast.success('Property Deleted Successfully');
 	};
 	return properties.map((property) => (
 		<div className='mb-10' key={property._id}>

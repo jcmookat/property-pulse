@@ -13,8 +13,7 @@ const PropertyEditPage = async ({ params }) => {
 	// query the property in the DB
 	const propertyDoc = await Property.findById(params.id).lean();
 
-	// convert the document to a plain js object so we can pass to client
-	// components
+	// convert the document to a plain js object so we can pass to client components
 	const property = convertToSerializeableObject(propertyDoc);
 
 	if (!property) {
