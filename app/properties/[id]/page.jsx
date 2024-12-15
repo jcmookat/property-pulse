@@ -2,13 +2,13 @@ import Link from 'next/link';
 import { FaArrowLeft } from 'react-icons/fa';
 import PropertyHeaderImage from '@/components/PropertyHeaderImage';
 import PropertyDetails from '@/components/PropertyDetails';
-import ShareButton from '@/components/ShareButton';
+import ShareButtons from '@/components/ShareButtons';
 import connectDB from '@/config/database';
 import Property from '@/models/Property';
 import PropertyImages from '@/components/PropertyImages';
 import { convertToSerializeableObject } from '@/utils/convertToObject';
-import BookmarkButton from '@/property-pulse-main/components/BookmarkButton';
-import ContactForm from '@/components/ContactForm';
+import BookmarkButton from '@/components/BookmarkButton';
+import PropertyContactForm from '@/components/PropertyContactForm';
 
 const PropertyPage = async ({ params }) => {
 	// NOTE: No need for making a fetch request here to our API routes, we can
@@ -51,8 +51,8 @@ const PropertyPage = async ({ params }) => {
 						<PropertyDetails property={property} />
 						<aside className='space-y-4'>
 							<BookmarkButton property={property} />
-							<ShareButton property={property} />
-							<ContactForm property={property} />
+							<ShareButtons property={property} />
+							<PropertyContactForm property={property} />
 						</aside>
 					</div>
 				</div>
