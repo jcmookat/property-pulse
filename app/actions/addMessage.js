@@ -3,7 +3,8 @@ import connectDB from '@/config/database';
 import Message from '@/models/Message';
 import { getSessionUser } from '@/utils/getSessionUser';
 
-async function addMessage(formData) {
+async function addMessage(previousState, formData) {
+	// formData should be second argument
 	await connectDB();
 
 	const sessionUser = await getSessionUser();
@@ -32,7 +33,7 @@ async function addMessage(formData) {
 
 	await newMessage.save();
 
-	return { submitted: true };
+	return { submitted: true, successMessage: 'Message sent successfully' };
 }
 
 export default addMessage;
