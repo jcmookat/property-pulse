@@ -1,13 +1,17 @@
 import PropertyCard from '@/components/PropertyCard';
-// import properties from '@/properties.json'; //sample
-import { fetchProperties } from '@/utils/requests';
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
 
 // make sure to convert the function to async
-const PropertiesPage = async () => {
-	const properties = await fetchProperties();
+const PropertiesPage = async ({ searchParams: { page = 1, pageSize = 1 } }) => {
+	// destructure searchParams and have a default value of page 1
+	await connectDB();
+	const skip = (page - 1) * pageSize;
 
-	//Sort properties by date
-	properties.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+	const total = await Property.countDocuments({});
+
+	const properties = await Property.find({}).skip(skip).limit(pageSize);
+
 	return (
 		<section className='px-4 py-6'>
 			<div className='container-xl lg:container m-auto px-4 py-6'>
