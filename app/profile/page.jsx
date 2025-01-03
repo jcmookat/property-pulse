@@ -17,7 +17,7 @@ const ProfilePage = async () => {
 		throw new Error('User ID is required');
 	}
 
-	const propertiesDocs = await Property.find({ owner: userId }).lean(); // lean
+	const propertiesDocs = await Property.find({ owner: userId }).lean(); // lean The lean option tells Mongoose to skip hydrating the result documents. This makes queries faster and less memory intensive, but the result documents are plain old JavaScript objects (POJOs), not Mongoose documents.
 
 	// convert the document to a plain js object so we can pass to client components
 	const properties = propertiesDocs.map(convertToSerializeableObject); //returns an array of documents so we need to .map through
